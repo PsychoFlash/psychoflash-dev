@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- ============================================================
+         SECURITY HEADERS (meta fallback — main headers via Cloudflare)
+         ============================================================ -->
+    <!-- Content-Security-Policy: allow self + Google Fonts + WhatsApp/tel links -->
+    <meta http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: blob:;
+        connect-src 'self';
+        frame-ancestors 'none';
+        base-uri 'self';
+        form-action 'self';
+      " />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+
+    <!-- ============================================================
+         VIEWPORT & ACCESSIBILITY
+         ============================================================ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ============================================================
+         FAVICON
+         ============================================================ -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- ============================================================
+         SEO & OPEN GRAPH
+         ============================================================ -->
+    <title>PSYCHOFLASH — הפקות וידאו, שידורים חיים ו-AI | אוריאן עדלני</title>
+    <meta name="description" content="PSYCHOFLASH — מפיקים חוויות, יוצרים היסטוריה. הפקות וידאו 4K, שידורים חיים, AI Production, אירועים גלובליים. 1,045+ הפקות, 136 לקוחות, 25+ מדינות." />
+    <meta name="keywords" content="הפקות וידאו, שידורים חיים, AI Production, Runway, vMix, TriCaster, פסיכופלאש, PSYCHOFLASH, אוריאן עדלני, Orian Edelenyi, אדלני הפקות" />
+    <meta name="author" content="Orian Edelenyi — PSYCHOFLASH" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://psychoflash.dev" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://psychoflash.dev" />
+    <meta property="og:title" content="PSYCHOFLASH — Visual Content Engineering" />
+    <meta property="og:description" content="מפיקים חוויות, יוצרים היסטוריה. הפקות וידאו, שידורים חיים, AI Production." />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="PSYCHOFLASH" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PSYCHOFLASH — Visual Content Engineering" />
+    <meta name="twitter:description" content="מפיקים חוויות, יוצרים היסטוריה. הפקות וידאו, שידורים חיים, AI Production." />
+
+    <!-- ============================================================
+         THEME & PWA
+         ============================================================ -->
+    <meta name="theme-color" content="#160509" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F8F3EF" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!-- ============================================================
+         PERFORMANCE — preconnect
+         ============================================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Teko:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ============================================================
+         STRUCTURED DATA (JSON-LD) — LocalBusiness + Person
+         ============================================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://psychoflash.dev/#business",
+          "name": "PSYCHOFLASH — אדלני הפקות",
+          "alternateName": "Psychoflash",
+          "url": "https://psychoflash.dev",
+          "telephone": "+972-54-2559027",
+          "email": "PsychoFlash@gmail.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Orian Edelenyi",
+            "alternateName": "אוריאן עדלני"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IL"
+          },
+          "description": "הפקות וידאו מקצועיות, שידורים חיים, AI Production, אירועים גלובליים",
+          "areaServed": "Worldwide",
+          "serviceType": ["Video Production", "Live Broadcast", "AI Production", "Event Management", "Post Production"],
+          "foundingDate": "2009",
+          "priceRange": "$$$$",
+          "inLanguage": ["he", "en"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://psychoflash.dev/#website",
+          "url": "https://psychoflash.dev",
+          "name": "PSYCHOFLASH",
+          "description": "Visual Content Engineering",
+          "publisher": { "@id": "https://psychoflash.dev/#business" },
+          "inLanguage": "he"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <!-- Skip to main content — accessibility shortcut (WCAG 2.4.1) -->
+    <a
+      href="#main-content"
+      class="skip-link"
+      style="
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: hsl(36 66% 47%);
+        color: #000;
+        padding: 8px 16px;
+        font-family: Orbitron, monospace;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        z-index: 9999;
+        border-radius: 0 0 8px 0;
+        transition: top 0.15s;
+      "
+      onfocus="this.style.top='0'"
+      onblur="this.style.top='-40px'"
+    >
+      דלג לתוכן הראשי
+    </a>
+
+    <div id="root" role="application" aria-label="PSYCHOFLASH — אתר הפקות"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

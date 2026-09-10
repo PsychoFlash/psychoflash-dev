@@ -1,0 +1,20 @@
+{
+  "name": "PSYCHOFLASH",
+  "short_name": "PSYCHOFLASH",
+  "description": "Visual Content Engineering — הפקות וידאו, שידורים חיים, AI Production",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#160509",
+  "theme_color": "#C79A2A",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}

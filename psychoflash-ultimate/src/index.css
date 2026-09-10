@@ -1,0 +1,465 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* === DARK MODE (default) — Brand: Deep Burgundy + Gold === */
+    --bg:          350 55% 4%;       /* #160509 deep wine */
+    --bg-card:     350 45% 7%;       /* #221014 */
+    --fg:          15 15% 82%;       /* #D4C5C2 warm silver */
+    --fg-muted:    350 12% 50%;      /* #947278 muted wine */
+    --primary:     36 66% 47%;       /* #C79A2A brand gold */
+    --secondary:   350 55% 42%;      /* #A72E45 deep rose */
+    --border:      350 30% 16% / 1;  /* #3A1520 */
+    --glass:       350 45% 7% / 0.8;
+    --radius:      14px;
+  }
+
+  html.light {
+    /* === LIGHT MODE — Warm light with brand accent === */
+    --bg:          30 25% 96%;       /* #F8F3EF warm cream */
+    --bg-card:     30 20% 100%;      /* white-ish */
+    --fg:          350 30% 15%;      /* #33141D dark wine */
+    --fg-muted:    350 12% 42%;      /* #7A606B */
+    --primary:     36 66% 40%;       /* #AA8024 darker gold */
+    --secondary:   350 45% 38%;      /* #8E2A3D */
+    --border:      350 15% 85% / 1;  /* #DDD0D4 */
+    --glass:       30 20% 100% / 0.9;
+    --radius:      14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: hsl(var(--bg));
+    color: hsl(var(--fg));
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--primary));
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--bg)); }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 2px;
+  }
+
+  /* ============================================================
+     WCAG 2.1 AA — Accessibility foundations
+     ============================================================ */
+
+  /* 2.4.7 — Focus Visible: clear gold ring on ALL interactive elements */
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Remove default outline only when focus-visible is supported */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Screen-reader-only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  .sr-only.focus\:not-sr-only:focus,
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* 1.4.11 — Non-text contrast: ensure borders pass 3:1 */
+  input, textarea, select {
+    border-color: hsl(var(--border));
+  }
+
+  /* 1.4.12 — Text spacing: don't override user agent spacing overrides */
+  * {
+    line-height: revert-layer;
+  }
+  body {
+    line-height: 1.6;
+  }
+}
+
+
+@layer components {
+  /* === GLASS CARD === */
+  .glass-card {
+    background: hsl(var(--glass));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* === CYBER BUTTON === */
+  .cyber-btn {
+    position: relative;
+    padding: 11px 28px;
+    background: transparent;
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary));
+    font-family: "Orbitron", monospace;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.72rem;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .cyber-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--primary));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s ease;
+    z-index: -1;
+  }
+  .cyber-btn:hover { color: hsl(var(--bg)); box-shadow: 0 0 24px hsl(var(--primary) / 0.4); }
+  .cyber-btn:hover::before { transform: scaleX(1); }
+
+  .cyber-btn-outline {
+    color: hsl(var(--fg) / 0.6);
+    border-color: hsl(var(--border));
+  }
+  .cyber-btn-outline::before { background: hsl(var(--fg) / 0.08); }
+  .cyber-btn-outline:hover { color: hsl(var(--fg)); box-shadow: none; }
+
+  /* === NAV LINK === */
+  .nav-link {
+    position: relative;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: hsl(var(--fg-muted));
+    text-decoration: none;
+    transition: color 0.25s;
+    padding: 4px 0;
+    font-family: "Orbitron", monospace;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 0;
+    height: 1px;
+    background: hsl(var(--primary));
+    transition: width 0.25s ease;
+  }
+  .nav-link:hover { color: hsl(var(--fg)); }
+  .nav-link:hover::after { width: 100%; }
+
+  /* === GRADIENT TEXT === */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* === SECTION TITLE === */
+  .section-title {
+    font-family: "Teko", sans-serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: 1px;
+  }
+
+  /* === GLITCH === */
+  .glitch { position: relative; }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+  }
+  .glitch::before {
+    color: hsl(var(--primary));
+    animation: glitch-1 0.7s linear infinite;
+  }
+  .glitch::after {
+    color: hsl(var(--secondary));
+    animation: glitch-2 0.7s linear infinite;
+  }
+  .glitch.active::before,
+  .glitch.active::after { opacity: 0.75; }
+
+  /* === LIVE DOT === */
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    animation: pulse2 2s ease-in-out infinite;
+    box-shadow: 0 0 6px hsl(var(--primary));
+    flex-shrink: 0;
+  }
+
+  /* === TICKER === */
+  .ticker-wrap {
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker 45s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+
+  /* === STAT NUMBER === */
+  .stat-number {
+    font-family: "Orbitron", monospace;
+    font-weight: 900;
+    line-height: 1;
+    color: hsl(var(--fg));
+  }
+
+  /* === GRID BG === */
+  .grid-pattern {
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* === NEON DIVIDER === */
+  .neon-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--primary) / 0.35),
+      hsl(var(--secondary) / 0.35),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .font-orbitron { font-family: "Orbitron", monospace; }
+  .font-teko { font-family: "Teko", sans-serif; }
+}
+
+@keyframes glitch-1 {
+  0%,100% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, 0); }
+  20%      { clip-path: inset(92% 0 1% 0);  transform: translate(2px, 0); }
+  40%      { clip-path: inset(43% 0 1% 0);  transform: translate(-2px, 0); }
+  60%      { clip-path: inset(25% 0 58% 0); transform: translate(2px, 0); }
+  80%      { clip-path: inset(54% 0 7% 0);  transform: translate(-2px, 0); }
+}
+@keyframes glitch-2 {
+  0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 0); }
+  20%      { clip-path: inset(10% 0 85% 0); transform: translate(-2px, 0); }
+  40%      { clip-path: inset(63% 0 5% 0);  transform: translate(2px, 0); }
+  60%      { clip-path: inset(5% 0 80% 0);  transform: translate(-2px, 0); }
+  80%      { clip-path: inset(75% 0 10% 0); transform: translate(-2px, 0); }
+}
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-16px); }
+}
+@keyframes pulse2 {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%     { opacity: 0.35; transform: scale(0.75); }
+}
+@keyframes scanline {
+  0%   { top: -4px; }
+  100% { top: 100%; }
+}
+
+/* === NEURAL KEYFRAMES === */
+@keyframes synaptic-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.2), 0 0 20px hsl(var(--primary) / 0.05);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.15), 0 0 80px hsl(var(--primary) / 0.05);
+  }
+}
+
+@keyframes bio-breathe {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 0.85; transform: scale(1.02); }
+}
+
+@keyframes neural-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes action-potential {
+  0%   { transform: scaleX(0) translateX(0); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: scaleX(1) translateX(100%); opacity: 0; }
+}
+
+@keyframes chromatic-shift {
+  0%, 100% { text-shadow: -1px 0 hsl(var(--primary) / 0.3), 1px 0 hsl(var(--secondary) / 0.3); }
+  50%       { text-shadow: 1px 0 hsl(var(--primary) / 0.5), -1px 0 hsl(var(--secondary) / 0.2); }
+}
+
+@keyframes node-appear {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Neural utility classes */
+.neural-glow {
+  animation: synaptic-glow 3s ease-in-out infinite;
+}
+
+.neural-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--fg-muted) / 0.8) 0%,
+    hsl(var(--primary) / 0.9) 50%,
+    hsl(var(--fg-muted) / 0.8) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: neural-shimmer 4s linear infinite;
+}
+
+.chromatic {
+  animation: chromatic-shift 6s ease-in-out infinite;
+}
+
+/* Gradient text helper */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   WCAG 2.3.3 — prefers-reduced-motion
+   Disables all animations for users who request reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep canvas but freeze it */
+  canvas {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   WCAG 1.4.6 — prefers-contrast (Windows High Contrast / macOS)
+   ============================================================ */
+@media (forced-colors: active) {
+  .cyber-btn {
+    border: 2px solid ButtonText;
+    color: ButtonText;
+    background: ButtonFace;
+  }
+
+  .glass-card {
+    border: 1px solid ButtonText;
+    background: Canvas;
+  }
+
+  :focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .gradient-text,
+  .neural-shimmer {
+    -webkit-text-fill-color: ButtonText;
+    background: none;
+    color: ButtonText;
+  }
+}
+
+/* ============================================================
+   Print styles — WCAG 1.3.4
+   ============================================================ */
+@media print {
+  canvas,
+  .fixed,
+  header nav {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  .glass-card {
+    border: 1px solid #ccc !important;
+    background: white !important;
+  }
+}
