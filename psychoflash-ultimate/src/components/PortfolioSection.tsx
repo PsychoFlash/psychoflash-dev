@@ -4,6 +4,8 @@ import { Play, ExternalLink, ChevronLeft, ChevronRight, Sparkles, Layers, Video,
 import { FEATURED_PROJECTS, PARTNERS_DATA, type FeaturedProject, type BtsPhoto } from "@/data/psychoflashData";
 import OrianElasticCard from "@/components/OrianElasticCard";
 import { getRandomMisterHorseTransition, type MisterHorseTransition } from "@/utils/misterHorseTransitions";
+import { playTactileSound } from "@/utils/tactileAudio";
+import OdometerCounter from "@/components/OdometerCounter";
 
 const CATS = ["ALL", "BROADCAST", "LIVE", "CINEMA", "EVENTS"] as const;
 
@@ -148,11 +150,13 @@ function ProjectCard({
 
   const nextVisual = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
+    playTactileSound("whoosh");
     triggerTransition((visualIndex + 1) % visuals.length);
   };
 
   const prevVisual = (e: React.MouseEvent) => {
     e.stopPropagation();
+    playTactileSound("whoosh");
     triggerTransition((visualIndex - 1 + visuals.length) % visuals.length);
   };
 
@@ -165,6 +169,7 @@ function ProjectCard({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35, delay: index * 0.04 }}
           onClick={onSelect}
+          data-cursor="play"
           className="group cursor-pointer overflow-hidden relative rounded-xl border h-full flex flex-col justify-between transition-all duration-300 hover:border-primary/80 hover:shadow-xl"
           style={{
             background: "hsl(var(--bg-card) / 0.88)",
@@ -239,6 +244,7 @@ function ProjectCard({
                   e.stopPropagation();
                   nextVisual(e);
                 }}
+                data-cursor="mh"
                 className="px-2 py-0.5 rounded bg-black/80 hover:bg-primary/20 backdrop-blur-md border border-primary/50 hover:border-primary text-[8px] font-orbitron font-bold text-primary transition-all pointer-events-auto cursor-pointer flex items-center gap-1 shadow-md hover:scale-105"
                 style={{ opacity: isTransitioning ? 1 : 0.85 }}
                 title={`מעבר מיסטר הורס פעיל: ${activeTransition.nameHe} (לחץ להחלפה)`}

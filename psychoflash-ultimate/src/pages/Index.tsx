@@ -12,6 +12,9 @@ import ClientStrip from "@/components/ClientStrip";
 import ShowreelModal from "@/components/ShowreelModal";
 import AutopilotHUD from "@/components/AutopilotHUD";
 import TactileGlobalInteractions from "@/components/TactileGlobalInteractions";
+import CustomCinemaCursor from "@/components/CustomCinemaCursor";
+import BroadcastHUD from "@/components/BroadcastHUD";
+import DirectorDock from "@/components/DirectorDock";
 import { NeuroContext } from "@/hooks/NeuroContext";
 import { useNeuroMind } from "@/hooks/useNeuroMind";
 import { useNeuro } from "@/hooks/NeuroContext";
@@ -127,6 +130,13 @@ function AppInner() {
 
       {/* Ambient Collective AI Learner HUD ("מוטמע בדרך אגב", ללא גלילה כפויה) */}
       <AutopilotHUD />
+
+      {/* Broadcast SMPTE Drop-Frame Telemetry HUD & Director Controls */}
+      <BroadcastHUD />
+      <DirectorDock />
+
+      {/* Custom Cinema Optical Lerp Cursor (Lusion & Aristide Benoist style) */}
+      <CustomCinemaCursor />
 
       {/* 4K Showreel Master Modal */}
       <ShowreelModal

@@ -1,16 +1,18 @@
 /**
  * OrianElasticCard — Gamified Interactive Elastic Card Component
- * Powered by Orian Edelenyi's ActionScript Physics DNA
+ * Powered by Orian Edelenyi's ActionScript Physics DNA & Stripe/Lusion Sheen
  * 
  * Features:
  * - Dynamic cursor pull with elastic spring return
  * - 3D Gyro / Perspective tilt based on spring delta
+ * - Stripe & Lusion Chromatic Luminescence Sheen (--mouse-x, --mouse-y)
  * - Momentum drag & snap
  * - Tactile micro-vibrations
  */
 
 import React, { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { playTactileSound } from "@/utils/tactileAudio";
 
 interface OrianElasticCardProps {
   children: React.ReactNode;
@@ -58,10 +60,17 @@ export default function OrianElasticCard({
 
     mouseX.set(dx);
     mouseY.set(dy);
+
+    // Update CSS custom properties for specular border sheen (Stripe / Lusion)
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${px}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${py}px`);
   };
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    playTactileSound("fstop");
   };
 
   const handleMouseLeave = () => {
@@ -90,7 +99,7 @@ export default function OrianElasticCard({
       drag={enableDrag}
       dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
       dragElastic={0.2}
-      className={`transition-shadow duration-300 ${isHovered ? "shadow-2xl" : ""} ${className}`}
+      className={`elastic-card-sheen transition-shadow duration-300 ${isHovered ? "shadow-2xl" : ""} ${className}`}
     >
       {children}
     </motion.div>

@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, RefreshCw, Play, Aperture, Layers, Eye } from "lucide-react";
+import { Camera, RefreshCw, Play, Aperture, Layers, Eye, Sliders } from "lucide-react";
 import { useCircadian } from "@/hooks/CircadianThemeContext";
 import OrianElasticCard from "@/components/OrianElasticCard";
+import LensApertureScrubber, { FStop } from "@/components/LensApertureScrubber";
+import { playTactileSound } from "@/utils/tactileAudio";
 
 export interface MediaClip {
   id: string;
@@ -102,12 +104,33 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
   const [irisRotation, setIrisRotation] = useState(0);
   const [scrollFraction, setScrollFraction] = useState(0);
   const [currentScannedSection, setCurrentScannedSection] = useState("HERO · DIRECTOR STAGE MONITOR");
+  const [manualFStop, setManualFStop] = useState<FStop | null>(null);
+  const [customFocalScale, setCustomFocalScale] = useState(1.0);
+  const [lensScrubberOpen, setLensScrubberOpen] = useState(false);
 
   const video0Ref = useRef<HTMLVideoElement>(null);
   const video1Ref = useRef<HTMLVideoElement>(null);
   const { isEffectiveLight } = useCircadian();
 
   const currentClip = activeSlot === 0 ? slot0Media : slot1Media;
+
+  // Listen for external optical controls (f-stop and focal length)
+  useEffect(() => {
+    const handleFStop = (e: Event) => {
+      const detail = (e as CustomEvent<{ fstop: FStop }>).detail;
+      if (detail?.fstop) setManualFStop(detail.fstop);
+    };
+    const handleFocal = (e: Event) => {
+      const detail = (e as CustomEvent<{ focal: string; scale: number }>).detail;
+      if (detail?.scale) setCustomFocalScale(detail.scale);
+    };
+    window.addEventListener("pf-lens-fstop-change", handleFStop);
+    window.addEventListener("pf-lens-focal-change", handleFocal);
+    return () => {
+      window.removeEventListener("pf-lens-fstop-change", handleFStop);
+      window.removeEventListener("pf-lens-focal-change", handleFocal);
+    };
+  }, []);
 
   // Targeted ultra-soft dual-buffer crossfade function:
   // Fades between slot 0 and slot 1 with zero freeze, zero black frames, continuous playback
@@ -266,11 +289,24 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
   // Calculates optical aperture center & iris rotation matching camera lens physics
   const apertureY = 38 + scrollFraction * 26; // Smooth downward scan
   const apertureRotationDeg = irisRotation + scrollFraction * 220;
-  const currentFStop = scrollFraction < 0.15 ? "f/1.2" : scrollFraction < 0.35 ? "f/1.8" : scrollFraction < 0.6 ? "f/2.8" : scrollFraction < 0.85 ? "f/5.6" : "f/11";
+  const naturalFStop = scrollFraction < 0.15 ? "f/1.2" : scrollFraction < 0.35 ? "f/1.8" : scrollFraction < 0.6 ? "f/2.8" : scrollFraction < 0.85 ? "f/5.6" : "f/11";
+  const currentFStop = manualFStop || naturalFStop;
 
-  // Dynamic Camera Parallax: shifts video slightly vertically and scales gently with scroll
+  const dofBlurMap: Record<string, number> = {
+    "f/1.2": 7,
+    "f/1.4": 5,
+    "f/1.8": 3,
+    "f/2.8": 1,
+    "f/4.0": 0,
+    "f/5.6": 0,
+    "f/8.0": 0,
+    "f/11": 0,
+  };
+  const dofBlur = dofBlurMap[currentFStop] ?? 0;
+
+  // Dynamic Camera Parallax: shifts video slightly vertically and scales gently with scroll & focal preset
   const parallaxOffsetY = (scrollFraction - 0.5) * -75;
-  const parallaxScale = 1.05 + scrollFraction * 0.08;
+  const parallaxScale = (1.05 + scrollFraction * 0.08) * customFocalScale;
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -304,9 +340,9 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
               v.currentTime = 0;
               v.play().catch(() => {});
             }}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-all duration-300"
             style={{
-              filter: isEffectiveLight ? "brightness(0.96) contrast(1.18) saturate(1.15)" : "saturate(1.25) contrast(1.15)",
+              filter: `${isEffectiveLight ? "brightness(0.96) contrast(1.18) saturate(1.15)" : "saturate(1.25) contrast(1.15)"} ${dofBlur > 0 ? `blur(${dofBlur}px)` : ""}`,
             }}
           />
         </div>
@@ -329,9 +365,9 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
               v.currentTime = 0;
               v.play().catch(() => {});
             }}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-all duration-300"
             style={{
-              filter: isEffectiveLight ? "brightness(0.96) contrast(1.18) saturate(1.15)" : "saturate(1.25) contrast(1.15)",
+              filter: `${isEffectiveLight ? "brightness(0.96) contrast(1.18) saturate(1.15)" : "saturate(1.25) contrast(1.15)"} ${dofBlur > 0 ? `blur(${dofBlur}px)` : ""}`,
             }}
           />
         </div>
@@ -435,15 +471,25 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
         Docked at bottom-center of Hero — fades smoothly when scrolling into content!
       */}
       <div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center transition-all duration-500"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 transition-all duration-500"
         style={{
           opacity: scrollFraction > 0.14 ? 0 : 1,
           pointerEvents: scrollFraction > 0.14 ? "none" : "auto",
           transform: `translate(-50%, ${scrollFraction > 0.14 ? "20px" : "0px"})`,
         }}
       >
+        {/* Interactive Lens Aperture & Focal Length Popover */}
+        {lensScrubberOpen && (
+          <div className="w-[min(90vw,380px)] animate-in fade-in slide-in-from-bottom-2 duration-200 pointer-events-auto">
+            <LensApertureScrubber
+              currentFStop={currentFStop as FStop}
+              onFStopChange={(f) => setManualFStop(f)}
+            />
+          </div>
+        )}
+
         <div
-          className="flex items-center gap-3 px-5 py-2.5 rounded-2xl border shadow-xl backdrop-blur-xl"
+          className="flex items-center gap-3 px-5 py-2.5 rounded-2xl border shadow-xl backdrop-blur-xl pointer-events-auto"
           style={{
             background: isEffectiveLight ? "rgba(255, 255, 255, 0.88)" : "rgba(18, 6, 12, 0.88)",
             borderColor: isEffectiveLight ? "rgba(180, 130, 40, 0.4)" : "rgba(234, 179, 8, 0.4)",
@@ -452,13 +498,21 @@ export default function ApertureVideoBackground({ onOpenShowreel, externalTrigge
               : "0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(234, 179, 8, 0.15)",
           }}
         >
-          {/* Camera Aperture Icon */}
-          <div className="flex items-center gap-2">
+          {/* Camera Aperture Interactive Button */}
+          <button
+            data-cursor="aperture"
+            onClick={() => {
+              playTactileSound("switch");
+              setLensScrubberOpen(!lensScrubberOpen);
+            }}
+            className="flex items-center gap-2 px-1.5 py-0.5 rounded-lg border border-transparent hover:border-primary/50 hover:bg-primary/10 transition-colors"
+            title="כוונן צמצם אופטי ועומק שדה (f-stop)"
+          >
             <Aperture size={15} className="text-primary animate-spin" style={{ animationDuration: "16s" }} />
             <span className="font-orbitron text-[10px] font-bold text-primary tracking-wider">
               {currentFStop}
             </span>
-          </div>
+          </button>
 
           <div className="w-[1px] h-4 bg-border/60" />
 

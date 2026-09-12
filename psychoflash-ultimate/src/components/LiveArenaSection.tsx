@@ -15,6 +15,7 @@ import {
 import { FEATURED_PROJECTS } from "@/data/psychoflashData";
 import { DYNAMIC_CIRCLES } from "@/components/ProductionCirclesSection";
 import OrianElasticCard from "@/components/OrianElasticCard";
+import OdometerCounter from "@/components/OdometerCounter";
 
 const TYPEWRITER_SUGGESTIONS = [
   "חפש: ים המלח וגולייב (שידורי שטח ושטח קיצון)",
@@ -308,6 +309,37 @@ export default function LiveArenaSection() {
               {tag.label}
             </button>
           ))}
+        </div>
+
+        {/* Aristide Benoist Rolling Odometer Metrics Strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-border/40">
+          <div className="p-3.5 rounded-2xl border border-border/50 bg-card/40 backdrop-blur text-center shadow-lg transition-all hover:border-primary/50">
+            <p className="font-orbitron text-2xl sm:text-3xl font-black text-primary">
+              <OdometerCounter value={2500} suffix="+" enableTickSound={true} />
+            </p>
+            <p className="text-xs text-foreground-muted font-medium mt-1">שעות שידור בלייב</p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl border border-border/50 bg-card/40 backdrop-blur text-center shadow-lg transition-all hover:border-primary/50">
+            <p className="font-orbitron text-2xl sm:text-3xl font-black text-amber-400">
+              <OdometerCounter value={80} suffix="+" enableTickSound={true} />
+            </p>
+            <p className="text-xs text-foreground-muted font-medium mt-1">הפקות ענק ואירועי שיא</p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl border border-border/50 bg-card/40 backdrop-blur text-center shadow-lg transition-all hover:border-primary/50">
+            <p className="font-orbitron text-2xl sm:text-3xl font-black text-emerald-400">
+              <OdometerCounter value={10000} suffix="+" enableTickSound={true} />
+            </p>
+            <p className="text-xs text-foreground-muted font-medium mt-1">משתתפים בארנה ולייב</p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl border border-border/50 bg-card/40 backdrop-blur text-center shadow-lg transition-all hover:border-primary/50">
+            <p className="font-orbitron text-2xl sm:text-3xl font-black text-primary">
+              <OdometerCounter value={100} suffix="%" enableTickSound={true} />
+            </p>
+            <p className="text-xs text-foreground-muted font-medium mt-1">אמינות שידור ללא תקלות</p>
+          </div>
         </div>
       </div>
     </section>

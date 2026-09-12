@@ -1,0 +1,75 @@
+/**
+ * Broadcast & Cinema Effects Suite
+ * - Anamorphic 2.39:1 Cinema Bars
+ * - CRT Broadcast Monitor Scanlines & Aperture Grille
+ * - Lens Flare & Specular Highlights
+ */
+
+/* === Anamorphic 2.39:1 Cinema Mode === */
+html.cinema-mode::before,
+html.cinema-mode::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: #000000;
+  z-index: 99998;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.cinema-mode::before {
+  top: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+html.cinema-mode::after {
+  bottom: 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.9);
+}
+
+/* === CRT Broadcast Monitor Scanline Overlay === */
+html.crt-mode::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+  z-index: 99990;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+html.crt-mode {
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+/* === Stripe / Lusion Mouse Chromatic Card Luminescence === */
+.elastic-card-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.elastic-card-sheen::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    hsl(var(--primary) / 0.55),
+    transparent 60%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.elastic-card-sheen:hover::after {
+  opacity: 1;
+}
