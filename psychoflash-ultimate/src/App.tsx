@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { CircadianThemeProvider } from "@/hooks/CircadianThemeContext";
 
 const Index                   = lazy(() => import("./pages/Index"));
 const PrivacyPolicyPage       = lazy(() => import("./pages/PrivacyPolicyPage"));
@@ -21,16 +22,18 @@ const Loader = () => (
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/"                element={<Index />} />
-          <Route path="/privacy"         element={<PrivacyPolicyPage />} />
-          <Route path="/accessibility"   element={<AccessibilityStatementPage />} />
-          {/* Fallback — redirect to home for unknown routes */}
-          <Route path="*"               element={<Index />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <CircadianThemeProvider>
+      <BrowserRouter>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/"                element={<Index />} />
+            <Route path="/privacy"         element={<PrivacyPolicyPage />} />
+            <Route path="/accessibility"   element={<AccessibilityStatementPage />} />
+            {/* Fallback — redirect to home for unknown routes */}
+            <Route path="*"               element={<Index />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </CircadianThemeProvider>
   );
 }

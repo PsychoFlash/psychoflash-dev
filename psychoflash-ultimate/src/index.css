@@ -1,3 +1,5 @@
+@import "./styles/misterHorse.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,16 +19,45 @@
   }
 
   html.light {
-    /* === LIGHT MODE — Warm light with brand accent === */
-    --bg:          30 25% 96%;       /* #F8F3EF warm cream */
-    --bg-card:     30 20% 100%;      /* white-ish */
-    --fg:          350 30% 15%;      /* #33141D dark wine */
-    --fg-muted:    350 12% 42%;      /* #7A606B */
-    --primary:     36 66% 40%;       /* #AA8024 darker gold */
-    --secondary:   350 45% 38%;      /* #8E2A3D */
-    --border:      350 15% 85% / 1;  /* #DDD0D4 */
-    --glass:       30 20% 100% / 0.9;
+    /* === LIGHT MODE — High-Contrast Velvet Champagne & Espresso === */
+    --bg:          32 25% 97%;       /* #FBF8F5 warm champagne */
+    --bg-card:     0 0% 100%;        /* pure luminous white */
+    --fg:          350 45% 8%;       /* #1B060D ultra-deep espresso (WCAG AAA) */
+    --fg-muted:    350 25% 22%;      /* #46252E crisp high contrast dark burgundy */
+    --primary:     38 85% 34%;       /* #A06D0C bold deep gold */
+    --secondary:   350 65% 36%;      /* #972138 deep rich rose */
+    --border:      350 20% 75% / 1;  /* #D4BFC5 sharp border */
+    --glass:       0 0% 100% / 0.94;
     --radius:      14px;
+  }
+
+  html.light body {
+    color: hsl(var(--fg));
+    background-color: hsl(var(--bg));
+  }
+
+  html.light .gradient-text {
+    background: linear-gradient(135deg, #7c2d12 0%, #991b1b 50%, #451a03 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.9));
+  }
+
+  html.light .section-title {
+    color: #1b060d !important;
+  }
+
+  html.light [style*="color: hsl(var(--fg-muted))"],
+  html.light .text-foreground-muted {
+    color: #46252e !important;
+    opacity: 1 !important;
+  }
+
+  html.light [style*="opacity: 0.4"],
+  html.light [style*="opacity: 0.5"],
+  html.light [style*="opacity: 0.6"] {
+    opacity: 0.95 !important;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,7 +151,10 @@
     border-radius: var(--radius);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+  html.light .glass-card {
+    box-shadow: 0 4px 20px -2px rgba(51, 20, 29, 0.05), 0 2px 8px -1px rgba(51, 20, 29, 0.03);
   }
 
   /* === CYBER BUTTON === */

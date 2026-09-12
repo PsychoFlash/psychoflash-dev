@@ -11,9 +11,16 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Play } from "lucide-react";
 import { useNeuro } from "@/hooks/NeuroContext";
 import AdaptiveText from "@/components/AdaptiveText";
+import ApertureVideoBackground from "@/components/ApertureVideoBackground";
 import icountData from "@/data/icountData.json";
+
+interface NeuralHeroProps {
+  onOpenShowreel?: () => void;
+  externalTriggerAperture?: number;
+}
 
 const STATS = [
   { num: `${icountData.totalDocuments.toLocaleString()}+`, label: "Productions" },
@@ -24,7 +31,7 @@ const STATS = [
 
 const ADAPTIVE_TAGLINE = {
   unknown: "מפיקים חוויות. יוצרים היסטוריה.",
-  broadcast: "שידורים חיים ברמה אחרת. TriCaster. vMix. לייב בלי פשרות.",
+  broadcast: "שידורים חיים ברמה אחרת. vMix 4K. Blackmagic. לייב בלי פשרות.",
   hitech: "AI Production Pipelines. Runway. Kling. אוטומציה שמשנה חוקים.",
   events: "אירועים שנחרטים בזיכרון. מ-50 איש ועד 50,000. בכל מקום בעולם.",
   creative: "קולנוע. 4K. פוסט-פרודקשן שמרגש. תוכן שגורם לאנשים לעצור.",
@@ -50,7 +57,7 @@ const PARTICLES = Array.from({ length: 50 }, (_, i) => ({
   opacity: Math.random() * 0.2 + 0.05,
 }));
 
-export default function NeuralHero() {
+export default function NeuralHero({ onOpenShowreel, externalTriggerAperture }: NeuralHeroProps) {
   const { state, boostProfile } = useNeuro();
   const [isGlitching, setIsGlitching] = useState(false);
   const [apertureOpen, setApertureOpen] = useState(0.6);
@@ -191,13 +198,20 @@ export default function NeuralHero() {
             </svg>
           </motion.div>
 
-          {/* Main title */}
+          {/* Main title — Interactive with Orian's glitch & resonance response */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className={`font-orbitron font-black leading-none mb-5 select-none ${isGlitching ? "glitch active" : "glitch"}`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => {
+              setIsGlitching(true);
+              setTimeout(() => setIsGlitching(false), 500);
+            }}
+            title="לחץ להפעלת פעימת סייבר ורזוננס"
+            className={`font-orbitron font-black leading-none mb-5 select-none cursor-pointer ${isGlitching ? "glitch active" : "glitch"}`}
             data-text="PSYCHOFLASH"
+            data-tactile="title"
             style={{ fontSize: "clamp(2.8rem, 9vw, 8rem)", letterSpacing: "0.04em", wordBreak: "keep-all" }}
           >
             <span style={{ color: "hsl(var(--fg))" }}>PSYCHO</span>
@@ -223,7 +237,9 @@ export default function NeuralHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="font-teko text-xl md:text-3xl mb-2 tracking-wide"
+          className="font-teko text-xl md:text-3xl mb-2 tracking-wide cursor-pointer select-none"
+          whileHover={{ scale: 1.01 }}
+          data-tactile="title"
           style={{ color: "hsl(var(--fg-muted))" }}
         >
           <AdaptiveText text={ADAPTIVE_TAGLINE} />
@@ -234,13 +250,15 @@ export default function NeuralHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.45 }}
-          className="font-orbitron text-xs md:text-sm max-w-lg mx-auto mb-12 tracking-widest"
+          className="font-orbitron text-xs md:text-sm max-w-lg mx-auto mb-12 tracking-widest cursor-pointer select-none"
+          whileHover={{ opacity: 0.9, letterSpacing: "6px" }}
+          data-tactile="title"
           style={{ color: "hsl(var(--fg-muted))", opacity: 0.5, letterSpacing: "5px", textTransform: "uppercase" }}
         >
           VISUAL CONTENT ENGINEERING
         </motion.p>
 
-        {/* Stats — pulse with glow */}
+        {/* Stats — pulse with glow and react tactilely to every click */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -250,12 +268,15 @@ export default function NeuralHero() {
           {STATS.map((s) => (
             <motion.div
               key={s.label}
-              className="text-center cursor-default"
-              whileHover={{ scale: 1.06 }}
+              className="text-center cursor-pointer select-none group"
+              whileHover={{ scale: 1.1, y: -4 }}
+              whileTap={{ scale: 1.2, rotate: [-2, 2, 0] }}
               onHoverStart={() => boostProfile("broadcast", 0.01)}
+              data-tactile="stat"
+              title="לחץ לקבלת פעימת סינרגיה"
             >
               <motion.div
-                className="stat-number"
+                className="stat-number transition-colors group-hover:text-amber-400"
                 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
                 animate={{
                   textShadow: [
@@ -268,7 +289,7 @@ export default function NeuralHero() {
                 {s.num}
               </motion.div>
               <div
-                className="font-orbitron mt-1"
+                className="font-orbitron mt-1 group-hover:text-primary transition-colors"
                 style={{ fontSize: "8px", letterSpacing: "3px", color: "hsl(var(--fg-muted))", textTransform: "uppercase", opacity: 0.6 }}
               >
                 {s.label}
@@ -287,6 +308,20 @@ export default function NeuralHero() {
           <a href="#contact" className="cyber-btn py-3 px-8 relative overflow-hidden">
             <AdaptiveText text={ADAPTIVE_CTA} />
           </a>
+          {onOpenShowreel && (
+            <button
+              onClick={onOpenShowreel}
+              className="cyber-btn py-3 px-7 inline-flex items-center gap-2 border shadow-lg"
+              style={{
+                background: "hsl(var(--primary) / 0.16)",
+                borderColor: "hsl(var(--primary))",
+                color: "hsl(var(--fg))",
+              }}
+            >
+              <Play size={15} fill="currentColor" style={{ color: "hsl(var(--primary))" }} />
+              <span>שואו-ריל מאסטר 4K</span>
+            </button>
+          )}
           <a
             href="#services"
             className="cyber-btn cyber-btn-outline py-3 px-8"

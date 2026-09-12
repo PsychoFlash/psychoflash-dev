@@ -4,13 +4,6 @@
  * Orders sections by relevance to the user's behavioral profile.
  * Animations are smooth (Framer Motion layout) so reordering is
  * natural and never jarring.
- *
- * Default order: services → portfolio → pricing → contact
- * Profile overrides:
- * - broadcast → services first (with broadcast terms in focus)
- * - hitech → portfolio first (show AI/tech work)
- * - events → pricing first (event budgets = key concern)
- * - creative → portfolio first (visual work)
  */
 
 import { Suspense, lazy, useMemo } from "react";
@@ -18,10 +11,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNeuro } from "@/hooks/NeuroContext";
 import NeuralSection from "@/components/NeuralSection";
 
-const ServicesSection  = lazy(() => import("@/components/ServicesSection"));
-const PortfolioSection = lazy(() => import("@/components/PortfolioSection"));
-const PricingSection   = lazy(() => import("@/components/PricingSection"));
-const ContactSection   = lazy(() => import("@/components/ContactSection"));
+const PortfolioSection    = lazy(() => import("@/components/PortfolioSection"));
+const ProductionCirclesSection = lazy(() => import("@/components/ProductionCirclesSection"));
+const AboutSection        = lazy(() => import("@/components/AboutSection"));
+const ContactSection      = lazy(() => import("@/components/ContactSection"));
 
 function SectionLoader() {
   return (
@@ -35,10 +28,10 @@ function SectionLoader() {
 }
 
 const SECTIONS = [
-  { id: "services", component: ServicesSection, profiles: ["broadcast", "creative"] },
-  { id: "portfolio", component: PortfolioSection, profiles: ["hitech", "creative", "events"] },
-  { id: "pricing", component: PricingSection, profiles: ["events", "broadcast"] },
-  { id: "contact", component: ContactSection, profiles: ["unknown"] },
+  { id: "portfolio", component: PortfolioSection, profiles: ["hitech", "creative", "broadcast", "events"] },
+  { id: "synergy", component: ProductionCirclesSection, profiles: ["broadcast", "events", "hitech", "creative"] },
+  { id: "about", component: AboutSection, profiles: ["broadcast", "events", "hitech", "creative"] },
+  { id: "contact", component: ContactSection, profiles: ["unknown", "broadcast", "events", "hitech", "creative"] },
 ];
 
 export default function AdaptiveLayout() {

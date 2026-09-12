@@ -1,30 +1,31 @@
 /**
- * HiveMind — Collective Intelligence Strip
+ * HiveMind — Collective Intelligence Strip & Tactical Mode Controller
  *
- * Shows the "global consciousness" of all site visitors.
- * Uses a deterministic seed based on current time-slot + Math.sin
- * to simulate realistic, slowly drifting collective interest.
- * Totally client-side — no backend needed.
+ * Shows the "global consciousness" of all site visitors and acts as an
+ * interactive production telemetry switcher. Clicking any node changes
+ * the site focus, triggers audio telemetry, and filters the portfolio.
  */
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNeuro } from "@/hooks/NeuroContext";
+import { Sparkles, Activity, Radio, Cpu, Flame, Film } from "lucide-react";
 
 interface HiveTopic {
   label: string;
+  labelHe: string;
   emoji: string;
   key: "broadcast" | "hitech" | "events" | "creative";
+  categoryFilter: string;
 }
 
 const TOPICS: HiveTopic[] = [
-  { label: "Broadcast", emoji: "📡", key: "broadcast" },
-  { label: "AI Production", emoji: "🧠", key: "hitech" },
-  { label: "Live Events", emoji: "⚡", key: "events" },
-  { label: "Creative", emoji: "🎬", key: "creative" },
+  { label: "Broadcast", labelHe: "שידור חי ולוויין", emoji: "📡", key: "broadcast", categoryFilter: "BROADCAST" },
+  { label: "AI Production", labelHe: "הפקת AI אוטונומית", emoji: "🧠", key: "hitech", categoryFilter: "CINEMA" },
+  { label: "Live Arena", labelHe: "מגה-ארנות והיכלים", emoji: "⚡", key: "events", categoryFilter: "LIVE" },
+  { label: "Creative / 4K", labelHe: "קולנוע ומאסטר 4K", emoji: "🎬", key: "creative", categoryFilter: "CINEMA" },
 ];
 
-// Generate pseudo-random but smooth, slowly drifting collective interest
 function computeHiveWeights(seed: number): Record<string, number> {
   const t = seed;
   const raw = {
@@ -38,21 +39,20 @@ function computeHiveWeights(seed: number): Record<string, number> {
 }
 
 export default function HiveMind() {
-  const { state } = useNeuro();
+  const { state, boostProfile } = useNeuro();
   const [hive, setHive] = useState(() => computeHiveWeights(Date.now()));
-  const [activeSessions] = useState(() => Math.floor(Math.sin(Date.now() * 0.00001) * 8 + 14));
-  const rafRef = useRef(0);
+  const [activeSessions, setActiveSessions] = useState(() => Math.floor(Math.sin(Date.now() * 0.00001) * 8 + 14));
+  const [activeFeedback, setActiveFeedback] = useState<string | null>(null);
 
   // Slowly drift the hive weights
   useEffect(() => {
-    // eslint-disable-next-line prefer-const
     let rafHandle: number;
     let timeHandle: ReturnType<typeof setTimeout>;
     const tick = () => {
       setHive(computeHiveWeights(Date.now()));
       timeHandle = setTimeout(() => {
         rafHandle = requestAnimationFrame(tick);
-      }, 2000);
+      }, 3000);
     };
     rafHandle = requestAnimationFrame(tick);
     return () => {
@@ -77,31 +77,57 @@ export default function HiveMind() {
     normalized[b.key] > normalized[a.key] ? b : a
   );
 
+  const handleTopicClick = (topic: HiveTopic) => {
+    // Boost profile in neuro system
+    boostProfile(topic.key, 0.4);
+    setActiveFeedback(`${topic.emoji} מצב ${topic.labelHe} הופעל`);
+    setTimeout(() => setActiveFeedback(null), 2500);
+
+    // Filter portfolio if available
+    window.dispatchEvent(
+      new CustomEvent("pf-filter-portfolio", { detail: { category: topic.categoryFilter } })
+    );
+
+    // Scroll smoothly to portfolio
+    const el = document.getElementById("portfolio");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2, duration: 1 }}
-      className="fixed bottom-6 right-6 z-40 pointer-events-none"
+      className="fixed bottom-6 right-6 z-40 pointer-events-auto"
     >
       <div
-        className="rounded-xl px-4 py-3"
+        className="rounded-xl px-4 py-3 border shadow-2xl transition-all duration-300 hover:border-primary/60"
         style={{
-          background: "hsl(var(--bg-card) / 0.85)",
-          border: "1px solid hsl(var(--border))",
-          backdropFilter: "blur(12px)",
-          minWidth: "180px",
+          background: "hsl(var(--bg-card) / 0.90)",
+          borderColor: "hsl(var(--border))",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          minWidth: "210px",
         }}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-2.5">
-          <span
-            className="font-orbitron uppercase"
-            style={{ fontSize: "7px", letterSpacing: "2px", color: "hsl(var(--fg-muted))", opacity: 0.7 }}
-          >
-            NEURAL PULSE
-          </span>
           <div className="flex items-center gap-1.5">
+            <Activity size={10} className="text-primary animate-pulse" />
+            <span
+              className="font-orbitron font-bold uppercase tracking-[2px]"
+              style={{ fontSize: "7.5px", color: "hsl(var(--fg))" }}
+            >
+              NEURAL PULSE
+            </span>
+          </div>
+          <button
+            onClick={() => setActiveSessions((prev) => prev + 1)}
+            className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-primary/10 transition-colors"
+            title="לחץ לרענון טלמטריה"
+          >
             <div
               className="w-1.5 h-1.5 rounded-full"
               style={{
@@ -110,65 +136,88 @@ export default function HiveMind() {
               }}
             />
             <span
-              style={{ fontSize: "7px", color: "hsl(var(--fg-muted))", opacity: 0.5 }}
+              className="font-mono text-[8px] font-semibold"
+              style={{ color: "hsl(var(--fg-muted))" }}
             >
               {activeSessions} active
             </span>
-          </div>
+          </button>
         </div>
 
-        {/* Interest bars */}
+        {/* Interest bars — Fully Clickable! */}
         <div className="flex flex-col gap-1.5">
-          {TOPICS.map(({ label, emoji, key }) => {
+          {TOPICS.map((topic) => {
+            const { label, emoji, key } = topic;
             const w = normalized[key];
-            const isPersonal = state.weights[key] > 0.28;
             const isDominant = key === dominant.key;
             return (
-              <div key={key} className="flex items-center gap-2">
-                <span style={{ fontSize: "9px", minWidth: "12px" }}>{emoji}</span>
+              <button
+                key={key}
+                onClick={() => handleTopicClick(topic)}
+                className="group flex items-center gap-2 text-right w-full px-1 py-0.5 rounded-md hover:bg-white/5 transition-all text-left"
+                title={`לחץ לסינון פרויקטי ${topic.labelHe}`}
+              >
+                <span style={{ fontSize: "10px", minWidth: "14px" }}>{emoji}</span>
+                <span
+                  className="text-[9px] font-medium truncate flex-1 text-right group-hover:text-primary transition-colors"
+                  style={{ color: isDominant ? "hsl(var(--primary))" : "hsl(var(--fg))" }}
+                >
+                  {label}
+                </span>
                 <div
-                  className="flex-1 rounded-full overflow-hidden"
-                  style={{ height: "3px", background: "hsl(var(--border))" }}
+                  className="w-14 rounded-full overflow-hidden"
+                  style={{ height: "4px", background: "hsl(var(--border))" }}
                 >
                   <motion.div
                     className="h-full rounded-full"
                     style={{
                       background: isDominant
                         ? "hsl(var(--primary))"
-                        : "hsl(var(--fg-muted) / 0.4)",
+                        : "hsl(var(--fg-muted) / 0.5)",
                     }}
                     animate={{ width: `${(w * 100).toFixed(1)}%` }}
                     transition={{ duration: 1.5, ease: "easeInOut" }}
                   />
                 </div>
                 <span
-                  className="font-orbitron"
+                  className="font-orbitron font-bold"
                   style={{
-                    fontSize: "7px",
-                    color: isDominant
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--fg-muted))",
-                    opacity: isDominant ? 1 : 0.5,
-                    minWidth: "28px",
+                    fontSize: "7.5px",
+                    color: isDominant ? "hsl(var(--primary))" : "hsl(var(--fg-muted))",
+                    minWidth: "26px",
                     textAlign: "right",
                   }}
                 >
                   {(w * 100).toFixed(0)}%
                 </span>
-              </div>
+              </button>
             );
           })}
         </div>
 
-        {/* Current focus */}
-        <div className="mt-2.5 pt-2" style={{ borderTop: "1px solid hsl(var(--border))" }}>
+        {/* Current focus indicator & feedback */}
+        <div className="mt-2.5 pt-2 flex items-center justify-between" style={{ borderTop: "1px solid hsl(var(--border))" }}>
           <span
-            className="font-orbitron"
-            style={{ fontSize: "7px", color: "hsl(var(--primary))", letterSpacing: "1px" }}
+            className="font-orbitron text-[7.5px] font-bold text-primary tracking-wider"
           >
             DOMINANT: {dominant.emoji} {dominant.label.toUpperCase()}
           </span>
+          <span className="text-[8px] text-primary/60 font-mono">LIVE</span>
         </div>
+
+        {/* Interactive feedback toast */}
+        <AnimatePresence>
+          {activeFeedback && (
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              className="mt-1.5 px-2 py-1 rounded bg-primary/20 border border-primary/40 font-orbitron text-[8px] text-primary font-bold text-center"
+            >
+              {activeFeedback}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

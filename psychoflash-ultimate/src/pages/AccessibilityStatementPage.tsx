@@ -144,7 +144,7 @@ export default function AccessibilityStatementPage() {
             </p>
             <div className="space-y-1" style={{ color: "hsl(var(--fg-muted))" }}>
               <p>
-                <strong style={{ color: "hsl(var(--fg))" }}>רכז נגישות:</strong> אוריאן עדלני
+                <strong style={{ color: "hsl(var(--fg))" }}>רכז נגישות:</strong> אוריין אדלני
               </p>
               <p>
                 <strong style={{ color: "hsl(var(--fg))" }}>דוא"ל:</strong>{" "}

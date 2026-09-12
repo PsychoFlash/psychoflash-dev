@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { useNeuro } from "@/hooks/NeuroContext";
+import { useCircadian } from "@/hooks/CircadianThemeContext";
 
 interface Node {
   id: number;
@@ -55,6 +56,10 @@ export default function SynapticCanvas() {
   const { state } = useNeuro();
   const neuroRef = useRef(state);
   neuroRef.current = state;
+
+  const { isEffectiveLight } = useCircadian();
+  const isLightRef = useRef(isEffectiveLight);
+  isLightRef.current = isEffectiveLight;
 
   const rafRef = useRef(0);
   const nodesRef = useRef<Node[]>([]);
@@ -142,6 +147,7 @@ export default function SynapticCanvas() {
       const nodes = nodesRef.current;
       const conns = connectionsRef.current;
       const mouse = mouseRef.current;
+      const isLight = isLightRef.current;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -178,11 +184,17 @@ export default function SynapticCanvas() {
         const alpha = Math.max(0.03, conn.strength * 0.12 + glow * 0.06);
         const lineWidth = 0.4 + conn.strength * 0.6;
 
-        // Gold to wine gradient along connection
+        // Gold to wine gradient along connection (boosted for light mode)
         const grad = ctx.createLinearGradient(na.x, na.y, nb.x, nb.y);
-        grad.addColorStop(0, `hsla(36, 70%, 48%, ${alpha})`);
-        grad.addColorStop(0.5, `hsla(350, 55%, 35%, ${alpha * 0.7})`);
-        grad.addColorStop(1, `hsla(36, 70%, 48%, ${alpha})`);
+        if (isLight) {
+          grad.addColorStop(0, `hsla(37, 80%, 38%, ${alpha * 2.2})`);
+          grad.addColorStop(0.5, `hsla(350, 50%, 42%, ${alpha * 1.8})`);
+          grad.addColorStop(1, `hsla(37, 80%, 38%, ${alpha * 2.2})`);
+        } else {
+          grad.addColorStop(0, `hsla(36, 70%, 48%, ${alpha})`);
+          grad.addColorStop(0.5, `hsla(350, 55%, 35%, ${alpha * 0.7})`);
+          grad.addColorStop(1, `hsla(36, 70%, 48%, ${alpha})`);
+        }
 
         ctx.beginPath();
         ctx.moveTo(na.x, na.y);
@@ -203,9 +215,15 @@ export default function SynapticCanvas() {
 
           // Pulse glow
           const pulseGrad = ctx.createRadialGradient(bx, by, 0, bx, by, 6 + glow * 4);
-          pulseGrad.addColorStop(0, `hsla(36, 95%, 70%, ${p.opacity})`);
-          pulseGrad.addColorStop(0.4, `hsla(36, 80%, 55%, ${p.opacity * 0.4})`);
-          pulseGrad.addColorStop(1, `hsla(36, 60%, 40%, 0)`);
+          if (isLight) {
+            pulseGrad.addColorStop(0, `hsla(37, 95%, 45%, ${p.opacity})`);
+            pulseGrad.addColorStop(0.4, `hsla(37, 80%, 38%, ${p.opacity * 0.5})`);
+            pulseGrad.addColorStop(1, `hsla(37, 60%, 35%, 0)`);
+          } else {
+            pulseGrad.addColorStop(0, `hsla(36, 95%, 70%, ${p.opacity})`);
+            pulseGrad.addColorStop(0.4, `hsla(36, 80%, 55%, ${p.opacity * 0.4})`);
+            pulseGrad.addColorStop(1, `hsla(36, 60%, 40%, 0)`);
+          }
 
           ctx.beginPath();
           ctx.arc(bx, by, 6 + glow * 4, 0, Math.PI * 2);
@@ -265,10 +283,16 @@ export default function SynapticCanvas() {
           node.x, node.y, 0,
           node.x, node.y, nodeRadius * 3.5
         );
-        const goldAlpha = nodeAlpha;
-        nodeGrad.addColorStop(0, `hsla(36, 90%, 62%, ${goldAlpha})`);
-        nodeGrad.addColorStop(0.5, `hsla(36, 70%, 48%, ${goldAlpha * 0.3})`);
-        nodeGrad.addColorStop(1, `hsla(350, 55%, 20%, 0)`);
+        const goldAlpha = isLight ? nodeAlpha * 1.2 : nodeAlpha;
+        if (isLight) {
+          nodeGrad.addColorStop(0, `hsla(37, 90%, 42%, ${goldAlpha})`);
+          nodeGrad.addColorStop(0.5, `hsla(37, 70%, 36%, ${goldAlpha * 0.35})`);
+          nodeGrad.addColorStop(1, `hsla(350, 50%, 30%, 0)`);
+        } else {
+          nodeGrad.addColorStop(0, `hsla(36, 90%, 62%, ${goldAlpha})`);
+          nodeGrad.addColorStop(0.5, `hsla(36, 70%, 48%, ${goldAlpha * 0.3})`);
+          nodeGrad.addColorStop(1, `hsla(350, 55%, 20%, 0)`);
+        }
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius * 3.5, 0, Math.PI * 2);
@@ -278,14 +302,18 @@ export default function SynapticCanvas() {
         // Core dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(36, 95%, 70%, ${nodeAlpha + 0.2})`;
+        ctx.fillStyle = isLight
+          ? `hsla(37, 95%, 38%, ${nodeAlpha + 0.35})`
+          : `hsla(36, 95%, 70%, ${nodeAlpha + 0.2})`;
         ctx.fill();
 
         // Label (only for labeled nodes, show on hover proximity)
         if (node.label && mDist < 120) {
           const labelOpacity = Math.max(0, 1 - mDist / 120) * 0.7;
           ctx.font = `600 7px 'Orbitron', monospace`;
-          ctx.fillStyle = `hsla(36, 80%, 70%, ${labelOpacity})`;
+          ctx.fillStyle = isLight
+            ? `hsla(37, 90%, 28%, ${labelOpacity})`
+            : `hsla(36, 80%, 70%, ${labelOpacity})`;
           ctx.textAlign = "center";
           ctx.fillText(node.label, node.x, node.y - nodeRadius - 5);
         }
@@ -301,8 +329,11 @@ export default function SynapticCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.55, mixBlendMode: "screen" }}
+      className="fixed inset-0 pointer-events-none z-0 transition-opacity duration-700"
+      style={{
+        opacity: isEffectiveLight ? 0.4 : 0.55,
+        mixBlendMode: isEffectiveLight ? "multiply" : "screen",
+      }}
       aria-hidden
     />
   );

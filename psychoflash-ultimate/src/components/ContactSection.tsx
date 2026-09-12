@@ -87,7 +87,7 @@ export default function ContactSection() {
                 label="שם מלא"
                 value={form.name}
                 onChange={(v) => setForm({ ...form, name: v })}
-                placeholder="אוריאן עדלני"
+                placeholder="אוריין אדלני"
                 required
                 autoComplete="name"
               />
@@ -237,21 +237,27 @@ export default function ContactSection() {
             {/* WhatsApp CTA */}
             <div
               className="glass-card p-4 text-center"
-              style={{ borderColor: "hsl(var(--primary) / 0.2)" }}
+              style={{ borderColor: "hsl(var(--primary) / 0.25)" }}
             >
-              <p className="text-xs mb-2" style={{ color: "hsl(var(--fg-muted))" }}>
-                עדיף ב-WhatsApp?
+              <p className="text-xs mb-2 font-medium" style={{ color: "hsl(var(--fg-muted))" }}>
+                מעדיפים מענה מיידי ב-WhatsApp?
               </p>
               <a
-                href="https://wa.me/972542559027"
+                href={
+                  form.name || form.message
+                    ? `https://wa.me/972542559027?text=${encodeURIComponent(
+                        `שלום אוריין, שמי ${form.name || "אנונימי"}.\nטלפון: ${form.phone || "לא צוין"}\nשירות מבוקש: ${form.service || "כללי"}\nהודעה: ${form.message || ""}`
+                      )}`
+                    : "https://wa.me/972542559027"
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cyber-btn justify-center py-2.5 px-5 w-full text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]"
-                style={{ fontSize: "0.65rem" }}
+                style={{ fontSize: "0.68rem" }}
                 aria-label="פתח שיחת WhatsApp עם PSYCHOFLASH (נפתח בחלון חדש)"
               >
-                <MessageCircle size={12} aria-hidden="true" />
-                פתח WhatsApp
+                <MessageCircle size={14} aria-hidden="true" />
+                פתח שיחת WhatsApp מיידית
               </a>
             </div>
           </motion.div>

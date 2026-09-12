@@ -41,7 +41,7 @@ export interface NeuroState {
 
 // Keywords that map sections / hover targets to profiles
 const PROFILE_KEYWORDS: Record<NeuroProfile, readonly string[]> = {
-  broadcast: ["שידור", "broadcast", "live", "stream", "vMix", "TriCaster", "לוויין", "קשת", "גו-לייב", "סטוץ"],
+  broadcast: ["שידור", "broadcast", "live", "stream", "vMix", "Blackmagic", "ATEM", "לוויין", "קשת", "שידור חי"],
   hitech: ["AI", "Pipeline", "Runway", "Kling", "automation", "AI Production", "tech", "code", "script", "api"],
   events: ["אירוע", "event", "חתונה", "wedding", "הפקה", "conference", "stage", "אולם", "concert", "סמבו"],
   creative: ["4K", "portrait", "creative", "art", "design", "יצירה", "photography", "film", "post", "visual"],

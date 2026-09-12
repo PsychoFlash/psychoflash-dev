@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 
-const NAV_LINKS = ["#services", "#portfolio", "#pricing", "#contact"];
+const NAV_LINKS = ["#services", "#portfolio", "#arena", "#about", "#testimonials", "#pricing", "#contact"];
 const LABEL_MAP: Record<string, string> = {
-  "#services":  "שירותים",
-  "#portfolio": "פורטפוליו",
-  "#pricing":   "מחירים",
-  "#contact":   "יצירת קשר",
+  "#services":     "שירותים",
+  "#portfolio":    "פורטפוליו",
+  "#arena":        "זירה חיה",
+  "#about":        "אודות",
+  "#testimonials": "המלצות",
+  "#pricing":      "מחירים",
+  "#contact":      "יצירת קשר",
 };
 
 export default function Footer() {
@@ -82,9 +85,9 @@ export default function Footer() {
           <span
             className="font-orbitron text-[8px] tracking-wider"
             style={{ color: "hsl(var(--fg-muted))", opacity: 0.35 }}
-            aria-label="כל הזכויות שמורות לאוריאן עדלני"
+            aria-label="כל הזכויות שמורות לאוריין אדלני"
           >
-            © {year} ORIAN EDELENYI
+            © {year} ORIAN EDELENYI · אוריין אדלני
           </span>
         </div>
       </div>

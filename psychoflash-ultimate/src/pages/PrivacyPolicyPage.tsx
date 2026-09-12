@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
               1. כללי
             </h2>
             <p className="mb-3">
-              PSYCHOFLASH (להלן: <strong>"החברה"</strong>, <strong>"אנחנו"</strong>) מנוהלת על ידי אוריאן עדלני, אדלני הפקות.
+              PSYCHOFLASH (להלן: <strong>"החברה"</strong>, <strong>"אנחנו"</strong>) מנוהלת על ידי אוריין אדלני, אדלני הפקות.
               מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך בעת השימוש באתר{" "}
               <a href="https://psychoflash.dev" style={{ color: "hsl(var(--primary))" }}>psychoflash.dev</a>.
             </p>
@@ -225,7 +225,7 @@ export default function PrivacyPolicyPage() {
               8. יצירת קשר — ממונה על הגנת פרטיות
             </h2>
             <div className="space-y-1" style={{ color: "hsl(var(--fg-muted))" }}>
-              <p><strong style={{ color: "hsl(var(--fg))" }}>שם:</strong> אוריאן עדלני</p>
+              <p><strong style={{ color: "hsl(var(--fg))" }}>שם:</strong> אוריין אדלני</p>
               <p>
                 <strong style={{ color: "hsl(var(--fg))" }}>דוא"ל:</strong>{" "}
                 <a href="mailto:PsychoFlash@gmail.com" style={{ color: "hsl(var(--primary))" }}>

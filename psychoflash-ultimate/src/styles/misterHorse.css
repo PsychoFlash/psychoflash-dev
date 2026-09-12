@@ -1,0 +1,464 @@
+/* ============================================================
+   MISTER HORSE PREMIERE & AFTER EFFECTS TRANSITION SUITE
+   Authentic motion graphics transitions: Zoom In/Out with
+   Motion Tile & Black letterbox completion, Whip Pans,
+   360° Spins, Glitch RGB splits, Lens Rack Focus, Film Burns, etc.
+   ============================================================ */
+
+/* 1. Zoom In with Motion Tile Black Completion */
+@keyframes mhZoomInTile {
+  0% {
+    transform: scale(1);
+    filter: brightness(1) blur(0px);
+  }
+  45% {
+    transform: scale(2.2);
+    filter: brightness(1.2) blur(3px);
+    box-shadow: inset 0 0 40px #000;
+  }
+  50% {
+    transform: scale(0.65);
+    filter: brightness(0.6) blur(2px);
+    box-shadow: inset 0 0 60px #000;
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1) blur(0px);
+    box-shadow: inset 0 0 0px #000;
+  }
+}
+
+/* 2. Zoom Out with Motion Tile */
+@keyframes mhZoomOutTile {
+  0% {
+    transform: scale(1);
+    filter: brightness(1) blur(0px);
+  }
+  45% {
+    transform: scale(0.42);
+    filter: brightness(0.7) blur(2px);
+    box-shadow: inset 0 0 80px #000;
+  }
+  50% {
+    transform: scale(1.6);
+    filter: brightness(1.3) blur(3px);
+    box-shadow: inset 0 0 30px #000;
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1) blur(0px);
+    box-shadow: inset 0 0 0px #000;
+  }
+}
+
+/* 3. Whip Pan Left */
+@keyframes mhWhipPanLeft {
+  0% {
+    transform: translateX(0) skewX(0deg);
+    filter: blur(0px);
+  }
+  45% {
+    transform: translateX(-120%) skewX(-14deg);
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateX(120%) skewX(-14deg);
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateX(0) skewX(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* 4. Whip Pan Right */
+@keyframes mhWhipPanRight {
+  0% {
+    transform: translateX(0) skewX(0deg);
+    filter: blur(0px);
+  }
+  45% {
+    transform: translateX(120%) skewX(14deg);
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateX(-120%) skewX(14deg);
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateX(0) skewX(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* 5. Whip Pan Up (Tilt Up) */
+@keyframes mhWhipPanUp {
+  0% {
+    transform: translateY(0) skewY(0deg);
+    filter: blur(0px);
+  }
+  45% {
+    transform: translateY(-120%) skewY(-8deg);
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateY(120%) skewY(-8deg);
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateY(0) skewY(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* 6. Whip Pan Down (Tilt Down) */
+@keyframes mhWhipPanDown {
+  0% {
+    transform: translateY(0) skewY(0deg);
+    filter: blur(0px);
+  }
+  45% {
+    transform: translateY(120%) skewY(8deg);
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateY(-120%) skewY(8deg);
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateY(0) skewY(0deg);
+    filter: blur(0px);
+  }
+}
+
+/* 7. Spin 360° Clockwise */
+@keyframes mhSpin360CW {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: blur(0px);
+  }
+  45% {
+    transform: rotate(180deg) scale(0.6);
+    filter: blur(6px);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* 8. Spin 360° Counter-Clockwise */
+@keyframes mhSpin360CCW {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: blur(0px);
+  }
+  45% {
+    transform: rotate(-180deg) scale(0.6);
+    filter: blur(6px);
+  }
+  100% {
+    transform: rotate(-360deg) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* 9. Spin 180° Elastic Bounce */
+@keyframes mhSpin180Bounce {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  45% {
+    transform: rotate(180deg) scale(0.7);
+    filter: blur(4px);
+  }
+  75% {
+    transform: rotate(370deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* 10. Glitch RGB Split */
+@keyframes mhGlitchRgbSplit {
+  0% {
+    transform: translate(0);
+    filter: none;
+  }
+  20% {
+    transform: translate(-5px, 2px) skewX(3deg);
+    filter: drop-shadow(4px 0 0 rgba(255, 0, 80, 0.8)) drop-shadow(-4px 0 0 rgba(0, 230, 255, 0.8));
+  }
+  40% {
+    transform: translate(4px, -3px) skewX(-4deg);
+    filter: drop-shadow(-5px 0 0 rgba(255, 230, 0, 0.8)) drop-shadow(5px 0 0 rgba(0, 80, 255, 0.8));
+  }
+  60% {
+    transform: translate(-3px, 1px) skewX(2deg);
+    filter: drop-shadow(3px 0 0 rgba(255, 0, 80, 0.8)) drop-shadow(-3px 0 0 rgba(0, 230, 255, 0.8));
+  }
+  80% {
+    transform: translate(2px, -1px);
+    filter: drop-shadow(-1px 0 0 rgba(0, 230, 255, 0.5));
+  }
+  100% {
+    transform: translate(0);
+    filter: none;
+  }
+}
+
+/* 11. Lens Rack Focus (Bokeh Pull) */
+@keyframes mhLensRackFocus {
+  0% {
+    filter: blur(0px) brightness(1);
+    transform: scale(1);
+  }
+  45% {
+    filter: blur(18px) brightness(1.25);
+    transform: scale(1.08);
+  }
+  100% {
+    filter: blur(0px) brightness(1);
+    transform: scale(1);
+  }
+}
+
+/* 12. White Flash Overexposure */
+@keyframes mhWhiteFlashBurst {
+  0% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  40% {
+    filter: brightness(4) contrast(1.5);
+    transform: scale(1.05);
+  }
+  100% {
+    filter: brightness(1) contrast(1);
+    transform: scale(1);
+  }
+}
+
+/* 13. Vertigo Push-Pull / Dolly Zoom */
+@keyframes mhVertigoPush {
+  0% {
+    transform: perspective(600px) translateZ(0px);
+  }
+  45% {
+    transform: perspective(600px) translateZ(240px) scale(1.15);
+    filter: blur(3px);
+  }
+  50% {
+    transform: perspective(600px) translateZ(-160px) scale(0.85);
+    filter: blur(3px);
+  }
+  100% {
+    transform: perspective(600px) translateZ(0px) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* 14. Shutter Blade Snap / Iris Pinch */
+@keyframes mhShutterSnap {
+  0% {
+    clip-path: circle(100% at 50% 50%);
+    transform: scale(1);
+  }
+  45% {
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(0.9) rotate(25deg);
+  }
+  55% {
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(0.9) rotate(-25deg);
+  }
+  100% {
+    clip-path: circle(100% at 50% 50%);
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* 15. Camera Earthquake / Impact Shake */
+@keyframes mhCameraShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  15% { transform: translate(-8px, 6px) rotate(-2deg); }
+  30% { transform: translate(7px, -6px) rotate(2deg); }
+  45% { transform: translate(-6px, 4px) rotate(-1.5deg); }
+  60% { transform: translate(5px, -3px) rotate(1deg); }
+  75% { transform: translate(-3px, 2px) rotate(-0.5deg); }
+  90% { transform: translate(1px, -1px) rotate(0.2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* 16. Film Burn / Light Leak */
+@keyframes mhFilmBurn {
+  0% {
+    filter: brightness(1) sepia(0%);
+    box-shadow: inset 0 0 0px transparent;
+  }
+  45% {
+    filter: brightness(2.6) sepia(70%) hue-rotate(-25deg);
+    box-shadow: inset 0 0 90px rgba(255, 140, 0, 0.95);
+  }
+  100% {
+    filter: brightness(1) sepia(0%);
+    box-shadow: inset 0 0 0px transparent;
+  }
+}
+
+/* 17. Split Slice Horizontal */
+@keyframes mhSplitSliceH {
+  0% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateX(0);
+  }
+  45% {
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+    transform: translateX(-40px);
+  }
+  50% {
+    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+    transform: translateX(40px);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateX(0);
+  }
+}
+
+/* 18. Split Slice Vertical */
+@keyframes mhSplitSliceV {
+  0% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+  }
+  45% {
+    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    transform: translateY(-35px);
+  }
+  50% {
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    transform: translateY(35px);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+  }
+}
+
+/* 19. Elastic Snap Bounce */
+@keyframes mhElasticSnap {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.22, 0.82); }
+  55% { transform: scale(0.85, 1.18); }
+  75% { transform: scale(1.08, 0.94); }
+  90% { transform: scale(0.98, 1.02); }
+  100% { transform: scale(1); }
+}
+
+/* 20. Mosaic Pixelate Dissolve */
+@keyframes mhMosaicPixelate {
+  0% {
+    filter: blur(0px) contrast(1);
+    transform: scale(1);
+  }
+  45% {
+    filter: blur(8px) contrast(3) saturate(1.8);
+    transform: scale(1.04);
+  }
+  100% {
+    filter: blur(0px) contrast(1);
+    transform: scale(1);
+  }
+}
+
+/* 21. Cyber Laser Scanner Wipe */
+@keyframes mhCyberLaserScanner {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    filter: brightness(1.8) drop-shadow(0 0 10px #06b6d4);
+  }
+  100% {
+    clip-path: inset(0 0 0% 0);
+    filter: brightness(1);
+  }
+}
+
+/* 22. Prism Spectral Warp */
+@keyframes mhPrismWarp {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg);
+    filter: hue-rotate(0deg);
+  }
+  45% {
+    transform: rotate3d(1, 1, 0, 18deg) scale(1.08);
+    filter: hue-rotate(90deg) saturate(2);
+  }
+  100% {
+    transform: rotate3d(0, 0, 0, 0deg);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* 23. Anamorphic Lens Streak Pulse */
+@keyframes mhAnamorphicStreak {
+  0% {
+    box-shadow: inset 0 0 0px transparent;
+    filter: brightness(1);
+  }
+  40% {
+    box-shadow: inset 0 2px 20px rgba(0, 200, 255, 0.8), inset 0 -2px 20px rgba(0, 200, 255, 0.8);
+    filter: brightness(1.6) contrast(1.2);
+  }
+  100% {
+    box-shadow: inset 0 0 0px transparent;
+    filter: brightness(1);
+  }
+}
+
+/* 24. Roll 90° Snap */
+@keyframes mhRoll90Snap {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  45% {
+    transform: rotate(90deg) scale(0.65);
+    filter: blur(4px);
+  }
+  75% {
+    transform: rotate(95deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Master Classes applied during active transition */
+.mh-transition-zoom-in-tile      { animation: mhZoomInTile 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-zoom-out-tile     { animation: mhZoomOutTile 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-whip-pan-left     { animation: mhWhipPanLeft 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-whip-pan-right    { animation: mhWhipPanRight 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-whip-pan-up       { animation: mhWhipPanUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-whip-pan-down     { animation: mhWhipPanDown 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-spin-360-cw       { animation: mhSpin360CW 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.mh-transition-spin-360-ccw      { animation: mhSpin360CCW 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.mh-transition-spin-180-bounce   { animation: mhSpin180Bounce 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.mh-transition-glitch-rgb-split  { animation: mhGlitchRgbSplit 0.55s ease forwards; }
+.mh-transition-lens-rack-focus   { animation: mhLensRackFocus 0.7s ease-in-out forwards; }
+.mh-transition-white-flash-burst { animation: mhWhiteFlashBurst 0.5s ease-out forwards; }
+.mh-transition-vertigo-dolly-zoom{ animation: mhVertigoPush 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-shutter-snap,
+.mh-transition-shutter-iris-snap { animation: mhShutterSnap 0.65s ease-in-out forwards; }
+.mh-transition-camera-shake      { animation: mhCameraShake 0.6s ease-in-out forwards; }
+.mh-transition-film-burn         { animation: mhFilmBurn 0.75s ease-in-out forwards; }
+.mh-transition-split-slice-h     { animation: mhSplitSliceH 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-split-slice-v     { animation: mhSplitSliceV 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-elastic-snap      { animation: mhElasticSnap 0.75s ease-in-out forwards; }
+.mh-transition-mosaic-pixelate   { animation: mhMosaicPixelate 0.65s ease-in-out forwards; }
+.mh-transition-cyber-scanner     { animation: mhCyberLaserScanner 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.mh-transition-prism-warp        { animation: mhPrismWarp 0.8s ease-in-out forwards; }
+.mh-transition-anamorphic-streak { animation: mhAnamorphicStreak 0.65s ease-in-out forwards; }
+.mh-transition-roll-90-snap      { animation: mhRoll90Snap 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
