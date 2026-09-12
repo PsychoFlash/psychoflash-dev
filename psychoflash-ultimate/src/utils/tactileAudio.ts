@@ -6,6 +6,8 @@
  * Completely synthesized in real-time — zero network requests, zero latency.
  */
 
+export type TactileSoundType = "switch" | "chime" | "thud" | "pop" | "glitch" | "tally" | "shutter" | "fstop" | "whoosh" | "subbass";
+
 class TactileAudioEngine {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
@@ -28,7 +30,7 @@ class TactileAudioEngine {
     this.isMuted = muted;
   }
 
-  public play(type: "switch" | "chime" | "thud" | "pop" | "glitch" | "tally" = "switch") {
+  public play(type: TactileSoundType = "switch") {
     if (this.isMuted) return;
     const ctx = this.getContext();
     if (!ctx) return;
@@ -144,6 +146,90 @@ class TactileAudioEngine {
           osc.stop(t + 0.05);
           break;
         }
+
+        case "shutter": {
+          // Authentic SLR / Cinema mechanical blade shutter snap
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc1.type = "square";
+          osc1.frequency.setValueAtTime(950, t);
+          osc1.frequency.exponentialRampToValueAtTime(80, t + 0.025);
+
+          osc2.type = "triangle";
+          osc2.frequency.setValueAtTime(1600, t + 0.015);
+          osc2.frequency.exponentialRampToValueAtTime(140, t + 0.045);
+
+          gain.gain.setValueAtTime(0.09, t);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(t);
+          osc1.stop(t + 0.03);
+          osc2.start(t + 0.015);
+          osc2.stop(t + 0.05);
+          break;
+        }
+
+        case "fstop": {
+          // Precision optical lens aperture detent notch click
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(2100, t);
+          osc.frequency.exponentialRampToValueAtTime(350, t + 0.015);
+
+          gain.gain.setValueAtTime(0.06, t);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.018);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.02);
+          break;
+        }
+
+        case "whoosh": {
+          // Cinema camera whip pan dynamic whoosh
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(120, t);
+          osc.frequency.exponentialRampToValueAtTime(560, t + 0.12);
+          osc.frequency.exponentialRampToValueAtTime(80, t + 0.28);
+
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.linearRampToValueAtTime(0.07, t + 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.32);
+          break;
+        }
+
+        case "subbass": {
+          // Deep cinematic 48Hz drop
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(88, t);
+          osc.frequency.exponentialRampToValueAtTime(42, t + 0.35);
+
+          gain.gain.setValueAtTime(0.14, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.45);
+          break;
+        }
       }
     } catch {
       // Ignore autoplay policy if not engaged
@@ -153,6 +239,6 @@ class TactileAudioEngine {
 
 export const tactileAudio = new TactileAudioEngine();
 
-export function playTactileSound(type?: "switch" | "chime" | "thud" | "pop" | "glitch" | "tally") {
+export function playTactileSound(type?: TactileSoundType) {
   tactileAudio.play(type);
 }
