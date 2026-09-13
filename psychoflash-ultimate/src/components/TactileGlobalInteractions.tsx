@@ -41,13 +41,23 @@ export default function TactileGlobalInteractions() {
     const y = e.clientY;
 
     const id = ++nextId.current;
+    const isMisterHorse = !!target?.closest("[data-cursor='mh'], .mh-badge");
+    const isCamera = !!target?.closest("[data-cursor='snap'], .snap-btn");
+    const isAperture = !!target?.closest("[data-cursor='aperture']");
     const isInteractive = !!target?.closest("button, a, input, select, textarea, [role='button']");
     const isHeaderOrLogo = !!target?.closest("h1, h2, h3, [data-tactile='title'], .logo-glow");
     const isStat = !!target?.closest(".stat-number, [data-tactile='stat']");
     const isBadge = !!target?.closest(".badge, [data-tactile='badge']");
+    const isCard = !!target?.closest(".elastic-card-sheen, .group, card");
 
-    // Select sound based on element type
-    if (isStat) {
+    // Select synthesized physical audio feedback based on element semantics
+    if (isCamera) {
+      playTactileSound("shutter");
+    } else if (isMisterHorse) {
+      playTactileSound("whoosh");
+    } else if (isAperture) {
+      playTactileSound("fstop");
+    } else if (isStat) {
       playTactileSound("chime");
     } else if (isHeaderOrLogo) {
       playTactileSound("glitch");
@@ -55,15 +65,21 @@ export default function TactileGlobalInteractions() {
       playTactileSound("tally");
     } else if (isInteractive) {
       playTactileSound("switch");
+    } else if (isCard) {
+      playTactileSound("pop");
     } else {
       playTactileSound("thud");
     }
 
     const shockColor = isStat
-      ? "rgba(234, 179, 8, 0.7)"
+      ? "rgba(234, 179, 8, 0.8)"
       : isHeaderOrLogo
-      ? "rgba(245, 158, 11, 0.8)"
-      : "rgba(217, 119, 6, 0.5)";
+      ? "rgba(245, 158, 11, 0.85)"
+      : isMisterHorse
+      ? "rgba(168, 85, 247, 0.75)"
+      : isCamera
+      ? "rgba(255, 255, 255, 0.9)"
+      : "rgba(217, 119, 6, 0.55)";
 
     // Spawn shockwave ring
     setShockwaves((prev) => [...prev.slice(-6), { id, x, y, color: shockColor }]);

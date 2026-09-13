@@ -103,7 +103,7 @@ export default function DirectorDock() {
         aria-label="פאנל בקרי במאי מהירים"
       >
         <div
-          className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full border backdrop-blur-xl shadow-2xl transition-all"
+          className="flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border backdrop-blur-xl shadow-2xl transition-all max-w-[96vw] overflow-x-auto custom-scrollbar"
           style={{
             background: isEffectiveLight ? "rgba(255, 255, 255, 0.92)" : "rgba(18, 5, 9, 0.92)",
             borderColor: isEffectiveLight ? "rgba(160, 109, 12, 0.4)" : "rgba(199, 154, 42, 0.4)",
@@ -114,16 +114,16 @@ export default function DirectorDock() {
         >
           {/* Restore Point Verified Indicator */}
           <div
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-orbitron font-bold tracking-wider"
+            className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full border text-[9px] font-orbitron font-bold tracking-wider shrink-0"
             style={{
               background: "rgba(34, 197, 94, 0.12)",
               borderColor: "rgba(34, 197, 94, 0.4)",
               color: "#22c55e",
             }}
-            title="נקודת שחזור מאובטחת ומאומתת (v1.2 Restore Point)"
+            title="נקודת שחזור מאובטחת ומאומתת (v1.3 Restore Point)"
           >
             <ShieldCheck size={11} className="text-emerald-500 animate-pulse" />
-            <span className="hidden sm:inline">V1.2 RESTORE POINT</span>
+            <span className="hidden sm:inline">V1.3 RESTORE POINT</span>
           </div>
 
           <div className="w-[1px] h-3.5 bg-border/50" />

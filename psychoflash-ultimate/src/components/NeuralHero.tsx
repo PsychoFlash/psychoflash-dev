@@ -16,6 +16,7 @@ import { useNeuro } from "@/hooks/NeuroContext";
 import AdaptiveText from "@/components/AdaptiveText";
 import ApertureVideoBackground from "@/components/ApertureVideoBackground";
 import icountData from "@/data/icountData.json";
+import OdometerCounter from "@/components/OdometerCounter";
 
 interface NeuralHeroProps {
   onOpenShowreel?: () => void;
@@ -23,10 +24,10 @@ interface NeuralHeroProps {
 }
 
 const STATS = [
-  { num: `${icountData.totalDocuments.toLocaleString()}+`, label: "Productions" },
-  { num: `${icountData.activeClients}+`, label: "Clients" },
-  { num: "50+", label: "Team" },
-  { num: "2009", label: "Founded" },
+  { val: icountData.totalDocuments, suffix: "+", label: "Productions" },
+  { val: icountData.activeClients, suffix: "+", label: "Clients" },
+  { val: 50, suffix: "+", label: "Team" },
+  { val: 2009, suffix: "", label: "Founded" },
 ];
 
 const ADAPTIVE_TAGLINE = {
@@ -286,7 +287,7 @@ export default function NeuralHero({ onOpenShowreel, externalTriggerAperture }: 
                 }}
                 transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
               >
-                {s.num}
+                <OdometerCounter value={s.val} suffix={s.suffix} enableTickSound={false} />
               </motion.div>
               <div
                 className="font-orbitron mt-1 group-hover:text-primary transition-colors"

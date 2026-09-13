@@ -1,42 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-
-function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !started.current) {
-          started.current = true;
-          let start = 0;
-          const step = Math.ceil(target / 60);
-          const t = setInterval(() => {
-            start += step;
-            if (start >= target) {
-              setCount(target);
-              clearInterval(t);
-            } else {
-              setCount(start);
-            }
-          }, 16);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return (
-    <div ref={ref} className="stat-number text-5xl md:text-6xl font-orbitron" style={{ color: "hsl(var(--fg))" }}>
-      {count.toLocaleString()}
-      {suffix}
-    </div>
-  );
-}
+import OdometerCounter from "@/components/OdometerCounter";
 
 const PILLARS = [
   {
@@ -88,7 +51,9 @@ export default function AboutSection() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <Counter target={s.target} suffix={s.suffix} />
+              <div className="stat-number text-5xl md:text-6xl font-orbitron" style={{ color: "hsl(var(--fg))" }}>
+                <OdometerCounter value={s.target} suffix={s.suffix} enableTickSound={true} />
+              </div>
               <p
                 className="font-orbitron text-[9px] tracking-[3px] uppercase mt-2 font-semibold"
                 style={{ color: "hsl(var(--fg-muted))" }}
