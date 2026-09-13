@@ -101,9 +101,9 @@ function getSolarPhase(minuteOfDay: number, now: Date): SolarPhaseInfo {
 
 export function useCircadianTheme() {
   const [mode, setModeState] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return "circadian";
+    if (typeof window === "undefined") return "dark";
     const saved = localStorage.getItem("psychoflash-theme-mode") as ThemeMode | null;
-    return saved && ["circadian", "light", "dark"].includes(saved) ? saved : "circadian";
+    return saved && ["circadian", "light", "dark"].includes(saved) ? saved : "dark";
   });
 
   const [now, setNow] = useState(() => new Date());
@@ -123,11 +123,11 @@ export function useCircadianTheme() {
     return getSolarPhase(minuteOfDay, now);
   }, [minuteOfDay, now]);
 
+  // Keep the platform dark & cinematic 24/7; circadian shifts warm amber & solar temperature
   const isEffectiveLight = useMemo(() => {
     if (mode === "light") return true;
-    if (mode === "dark") return false;
-    return solarPhase.isDaylight;
-  }, [mode, solarPhase.isDaylight]);
+    return false;
+  }, [mode]);
 
   const setMode = useCallback((newMode: ThemeMode) => {
     setModeState(newMode);
