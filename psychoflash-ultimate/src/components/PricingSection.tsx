@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check, Zap } from "lucide-react";
+import OrianElasticCard from "@/components/OrianElasticCard";
 
 const PLANS = [
   {
@@ -80,96 +81,96 @@ export default function PricingSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PLANS.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -6 }}
-              className="glass-card relative overflow-hidden flex flex-col"
-              style={{
-                borderColor: plan.featured ? "hsl(var(--primary))" : "hsl(var(--border))",
-                boxShadow: plan.featured ? "0 10px 40px hsl(var(--primary) / 0.18)" : undefined,
-                background: plan.featured ? "hsl(var(--primary) / 0.04)" : undefined,
-              }}
-            >
-              {/* Top stripe */}
-              <div
-                className="h-1.5 w-full absolute top-0 left-0"
+            <OrianElasticCard key={plan.name} pullStrength={12} tiltAngle={5} className="h-full">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="glass-card relative overflow-hidden flex flex-col h-full"
                 style={{
-                  background: plan.featured
-                    ? "linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)))"
-                    : "linear-gradient(to right, hsl(var(--primary) / 0.5), transparent)",
+                  borderColor: plan.featured ? "hsl(var(--primary))" : "hsl(var(--border))",
+                  boxShadow: plan.featured ? "0 10px 40px hsl(var(--primary) / 0.18)" : undefined,
+                  background: plan.featured ? "hsl(var(--primary) / 0.04)" : undefined,
                 }}
-              />
+              >
+                {/* Top stripe */}
+                <div
+                  className="h-1.5 w-full absolute top-0 left-0"
+                  style={{
+                    background: plan.featured
+                      ? "linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)))"
+                      : "linear-gradient(to right, hsl(var(--primary) / 0.5), transparent)",
+                  }}
+                />
 
-              {plan.featured && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2">
-                  <span
-                    className="font-orbitron text-[9px] tracking-widest px-3 py-1 rounded-full font-bold shadow-md"
-                    style={{
-                      background: "linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)))",
-                      color: "white",
-                    }}
-                  >
-                    ⚡ הכי פופולרי
-                  </span>
-                </div>
-              )}
-
-              <div className="p-8 flex flex-col flex-1 mt-4">
-                {/* Plan name */}
-                <div className="mb-6">
-                  <p className="font-orbitron text-[9px] tracking-[4px] uppercase mb-1 font-semibold" style={{ color: "hsl(var(--fg-muted))" }}>
-                    {plan.name}
-                  </p>
-                  <h3 className="font-teko text-3xl font-bold" style={{ color: "hsl(var(--fg))" }}>
-                    {plan.nameHe}
-                  </h3>
-                  <p className="text-xs mt-1" style={{ color: "hsl(var(--fg-muted))" }}>
-                    {plan.desc}
-                  </p>
-                </div>
-
-                {/* Price */}
-                <div className="mb-8">
-                  <div
-                    className="font-orbitron font-black text-4xl"
-                    style={{ color: "hsl(var(--primary))" }}
-                  >
-                    {plan.price}
+                {plan.featured && (
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2">
+                    <span
+                      className="font-orbitron text-[9px] tracking-widest px-3 py-1 rounded-full font-bold shadow-md"
+                      style={{
+                        background: "linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)))",
+                        color: "white",
+                      }}
+                    >
+                      ⚡ הכי פופולרי
+                    </span>
                   </div>
-                  <p className="font-orbitron text-[9px] tracking-widest uppercase mt-1 font-semibold" style={{ color: "hsl(var(--fg-muted))" }}>
-                    {plan.period}
-                  </p>
+                )}
+
+                <div className="p-8 flex flex-col flex-1 mt-4">
+                  {/* Plan name */}
+                  <div className="mb-6">
+                    <p className="font-orbitron text-[9px] tracking-[4px] uppercase mb-1 font-semibold" style={{ color: "hsl(var(--fg-muted))" }}>
+                      {plan.name}
+                    </p>
+                    <h3 className="font-teko text-3xl font-bold" style={{ color: "hsl(var(--fg))" }}>
+                      {plan.nameHe}
+                    </h3>
+                    <p className="text-xs mt-1" style={{ color: "hsl(var(--fg-muted))" }}>
+                      {plan.desc}
+                    </p>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-8">
+                    <div
+                      className="font-orbitron font-black text-4xl"
+                      style={{ color: "hsl(var(--primary))" }}
+                    >
+                      {plan.price}
+                    </div>
+                    <p className="font-orbitron text-[9px] tracking-widest uppercase mt-1 font-semibold" style={{ color: "hsl(var(--fg-muted))" }}>
+                      {plan.period}
+                    </p>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5">
+                        <Check
+                          size={14}
+                          className="shrink-0 mt-0.5"
+                          style={{ color: "hsl(var(--primary))" }}
+                        />
+                        <span className="text-sm" style={{ color: "hsl(var(--fg))" }}>
+                          {f}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  <a
+                    href="#contact"
+                    className={`cyber-btn text-center justify-center py-3 ${plan.featured ? "" : "cyber-btn-outline"}`}
+                  >
+                    {plan.name === "ENTERPRISE" ? "בואו נשוחח על הפרויקט" : "בחר חבילה זו"}
+                  </a>
                 </div>
-
-                {/* Features */}
-                <ul className="space-y-3 mb-8 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5">
-                      <Check
-                        size={14}
-                        className="shrink-0 mt-0.5"
-                        style={{ color: "hsl(var(--primary))" }}
-                      />
-                      <span className="text-sm" style={{ color: "hsl(var(--fg))" }}>
-                        {f}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA */}
-                <a
-                  href="#contact"
-                  className={`cyber-btn text-center justify-center py-3 ${plan.featured ? "" : "cyber-btn-outline"}`}
-                >
-                  {plan.name === "ENTERPRISE" ? "בואו נשוחח על הפרויקט" : "בחר חבילה זו"}
-                </a>
-              </div>
-            </motion.div>
+              </motion.div>
+            </OrianElasticCard>
           ))}
         </div>
 

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Mail, Phone, MapPin, Send } from "lucide-react";
 import { useState, useId } from "react";
+import { playTactileSound } from "@/utils/tactileAudio";
 
 const CONTACTS = [
   { icon: Phone,         label: "טלפון",    value: "054-2559027",           href: "tel:+972542559027",            ariaLabel: "התקשר אלינו" },
@@ -17,10 +18,12 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    playTactileSound("switch");
     setSubmitting(true);
     // Simulate async submit
     setTimeout(() => {
       setSent(true);
+      playTactileSound("chime");
       setSubmitting(false);
       setTimeout(() => setSent(false), 4000);
       setForm({ name: "", phone: "", service: "", message: "" });
