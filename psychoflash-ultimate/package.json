@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --port 3000 --host",
     "build": "tsc && vite build",
-    "preview": "vite preview --port 3000 --host"
+    "preview": "vite preview --port 3000 --host",
+    "deploy": "wrangler pages deploy dist --project-name psychoflash-dev --branch master --commit-dirty=true"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.83.0",
